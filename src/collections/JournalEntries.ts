@@ -46,6 +46,13 @@ export const JournalEntries: CollectionConfig = {
       defaultValue: false,
     },
     {
+      name: 'images',
+      type: 'relationship',
+      relationTo: 'media',
+      hasMany: true,
+      maxRows: 2,
+    },
+    {
       name: 'title',
       type: 'text',
       required: true,

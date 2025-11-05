@@ -69,7 +69,6 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
-    entries: Entry;
     'journal-entries': JournalEntry;
     'fa-icons': FaIcon;
     tags: Tag;
@@ -82,7 +81,6 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
-    entries: EntriesSelect<false> | EntriesSelect<true>;
     'journal-entries': JournalEntriesSelect<false> | JournalEntriesSelect<true>;
     'fa-icons': FaIconsSelect<false> | FaIconsSelect<true>;
     tags: TagsSelect<false> | TagsSelect<true>;
@@ -165,17 +163,32 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "entries".
- */
-export interface Entry {
-  id: string;
-  title: string;
-  content: string;
-  updatedAt: string;
-  createdAt: string;
+  sizes?: {
+    thumb?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    square?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    hero?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -187,6 +200,7 @@ export interface JournalEntry {
   accentColour: 'amber' | 'pink' | 'sky' | 'emerald' | 'violet' | 'orange';
   tags: (string | Tag)[];
   favourited?: boolean | null;
+  images?: (string | Media)[] | null;
   title: string;
   slug: string;
   sections: {
@@ -259,10 +273,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: string | Media;
-      } | null)
-    | ({
-        relationTo: 'entries';
-        value: string | Entry;
       } | null)
     | ({
         relationTo: 'journal-entries';
@@ -361,16 +371,40 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "entries_select".
- */
-export interface EntriesSelect<T extends boolean = true> {
-  title?: T;
-  content?: T;
-  updatedAt?: T;
-  createdAt?: T;
+  sizes?:
+    | T
+    | {
+        thumb?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        square?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        hero?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -381,6 +415,7 @@ export interface JournalEntriesSelect<T extends boolean = true> {
   accentColour?: T;
   tags?: T;
   favourited?: T;
+  images?: T;
   title?: T;
   slug?: T;
   sections?:
