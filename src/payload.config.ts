@@ -34,6 +34,8 @@ export default buildConfig({
     url: process.env.DATABASE_URI || '',
   }),
   sharp,
+  cors: ["https://memory-keeper.noorhussain.co.uk", "https://cms.noorhussain.co.uk", "http://localhost:5173", "http://localhost:3000", "http://localhost:3001"],
+  csrf: ["https://memory-keeper.noorhussain.co.uk", "https://cms.noorhussain.co.uk", "http://localhost:5173", "http://localhost:3000", "http://localhost:3001"],
   plugins: [
     payloadCloudPlugin(),
     // storage-adapter-placeholder
