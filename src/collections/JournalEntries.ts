@@ -16,6 +16,9 @@ export const JournalEntries: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
   },
+  access: {
+    read: () => true,
+  },
   fields: [
     {
       name: 'date',
