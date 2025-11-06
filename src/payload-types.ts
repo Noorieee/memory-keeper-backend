@@ -69,7 +69,9 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
-    entries: Entry;
+    'journal-entries': JournalEntry;
+    'fa-icons': FaIcon;
+    tags: Tag;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -79,7 +81,9 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
-    entries: EntriesSelect<false> | EntriesSelect<true>;
+    'journal-entries': JournalEntriesSelect<false> | JournalEntriesSelect<true>;
+    'fa-icons': FaIconsSelect<false> | FaIconsSelect<true>;
+    tags: TagsSelect<false> | TagsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -159,15 +163,82 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
+  sizes?: {
+    thumb?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    square?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    hero?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "entries".
+ * via the `definition` "journal-entries".
  */
-export interface Entry {
+export interface JournalEntry {
   id: string;
+  date: string;
+  accentColour: 'amber' | 'pink' | 'sky' | 'emerald' | 'violet' | 'orange';
+  tags: (string | Tag)[];
+  favourited?: boolean | null;
+  images?: (string | Media)[] | null;
   title: string;
-  content: string;
+  slug: string;
+  sections: {
+    content: string;
+    accentColour: 'amber' | 'pink' | 'sky' | 'emerald' | 'violet' | 'orange';
+    id?: string | null;
+  }[];
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tags".
+ */
+export interface Tag {
+  id: string;
+  label: string;
+  slug: string;
+  icon: string | FaIcon;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "fa-icons".
+ */
+export interface FaIcon {
+  id: string;
+  label: string;
+  prefix: 'fas' | 'far' | 'fab';
+  /**
+   * e.g. plane, hotel, car, user, calendar. | https://fontawesome.com/search?f=classic&s=solid&ic=free&o=r
+   */
+  name: string;
+  /**
+   * auto-generated: e.g. fa-solid fa-plane
+   */
+  className?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -204,8 +275,16 @@ export interface PayloadLockedDocument {
         value: string | Media;
       } | null)
     | ({
-        relationTo: 'entries';
-        value: string | Entry;
+        relationTo: 'journal-entries';
+        value: string | JournalEntry;
+      } | null)
+    | ({
+        relationTo: 'fa-icons';
+        value: string | FaIcon;
+      } | null)
+    | ({
+        relationTo: 'tags';
+        value: string | Tag;
       } | null)
     | ({
         relationTo: 'payload-kv';
@@ -292,14 +371,83 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+  sizes?:
+    | T
+    | {
+        thumb?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        square?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        hero?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "entries_select".
+ * via the `definition` "journal-entries_select".
  */
-export interface EntriesSelect<T extends boolean = true> {
+export interface JournalEntriesSelect<T extends boolean = true> {
+  date?: T;
+  accentColour?: T;
+  tags?: T;
+  favourited?: T;
+  images?: T;
   title?: T;
-  content?: T;
+  slug?: T;
+  sections?:
+    | T
+    | {
+        content?: T;
+        accentColour?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "fa-icons_select".
+ */
+export interface FaIconsSelect<T extends boolean = true> {
+  label?: T;
+  prefix?: T;
+  name?: T;
+  className?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tags_select".
+ */
+export interface TagsSelect<T extends boolean = true> {
+  label?: T;
+  slug?: T;
+  icon?: T;
   updatedAt?: T;
   createdAt?: T;
 }
