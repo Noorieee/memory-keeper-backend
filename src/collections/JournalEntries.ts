@@ -67,6 +67,7 @@ export const JournalEntries: CollectionConfig = {
       name: 'sections',
       type: 'array',
       required: true,
+      maxRows: 3,
       fields: [
         {
           name: 'content',
