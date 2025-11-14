@@ -37,6 +37,13 @@ export const Media: CollectionConfig = {
         position: 'center',
         generateImageName: ({ originalName }) => `${originalName}__hero`,
       },
+      {
+        name: 'standard', // 3:2
+        width: 900,
+        height: 600,
+        position: 'center',
+        generateImageName: ({ originalName }) => `${originalName}__standard`,
+      },
     ],
     adminThumbnail: 'thumb',
     mimeTypes: ['image/*', 'video/*'],
